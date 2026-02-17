@@ -1,0 +1,80 @@
+#######################################
+# Syntax Coloring Map For MicroAsync
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+MicroAsync	KEYWORD1
+async	KEYWORD1
+Runtime	KEYWORD1
+Timer	KEYWORD1
+EventTimer	KEYWORD1
+Process	KEYWORD1
+ProcessGroup	KEYWORD1
+Call	KEYWORD1
+Params	KEYWORD1
+function	KEYWORD1
+Future	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+loop	KEYWORD2
+start	KEYWORD2
+stop	KEYWORD2
+reset	KEYWORD2
+clear	KEYWORD2
+set_time	KEYWORD2
+add_time	KEYWORD2
+get_time_passed	KEYWORD2
+set_resolution	KEYWORD2
+set_pulsing	KEYWORD2
+is_finished	KEYWORD2
+at_state	KEYWORD2
+add_event	KEYWORD2
+set_name	KEYWORD2
+get_name	KEYWORD2
+set_interval	KEYWORD2
+get_interval	KEYWORD2
+is_working	KEYWORD2
+toggle	KEYWORD2
+work	KEYWORD2
+shutdown	KEYWORD2
+kill	KEYWORD2
+start_all	KEYWORD2
+stop_all	KEYWORD2
+toggle_all	KEYWORD2
+work_all	KEYWORD2
+shutdown_all	KEYWORD2
+kill_all	KEYWORD2
+select_process	KEYWORD2
+safe_select_process	KEYWORD2
+wait	KEYWORD2
+then	KEYWORD2
+await	KEYWORD2
+expire	KEYWORD2
+expired	KEYWORD2
+extend	KEYWORD2
+extend_wait	KEYWORD2
+cancel	KEYWORD2
+value	KEYWORD2
+is_fulfilled	KEYWORD2
+gather	KEYWORD2
+builder	KEYWORD2
+call	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+idle	LITERAL1
+countdown	LITERAL1
+finished	LITERAL1
+millis_res	LITERAL1
+micros_res	LITERAL1
+created	LITERAL1
+stopped	LITERAL1
+working	LITERAL1
+shutting_down	LITERAL1

@@ -1,20 +1,17 @@
-# async-tools
-
-[![PlatformIO Registry](https://badges.registry.platformio.org/packages/nativeme/library/async-tools.svg)](https://registry.platformio.org/libraries/nativeme/async-tools)
-
+# MicroAsync
 
 Library providing asynchrony to the microcontrollers in few popular trends known from higher level programing languages.
 
 1) Calls
 2) Processes
-3) Async functions (experimental ⚠)
+3) Async functions
 
 ## Async call
 Simple one-time call that will execute statements in order.
 Very useful in situations, where one event happens, and you want to trigger
 a series of events spread out over time without blocking.
 
-See full example: [examples](/../../tree/master/examples/Call.cpp)
+See full example: [examples](/../../tree/master/examples/Call/Call.ino)
 ##### Sample snippet:
 ``` c++
 async::call()->then([](){
@@ -36,7 +33,7 @@ Processes are designed for maintaining cyclic events that happen in certain inte
 That could be for example a sensor reading and sending data over the network.
 If you declare few blinker processes like shown below all leds will blink asynchronously independent.
 
-See full example: [examples](/../../tree/master/examples/Processes.cpp) 
+See full example: [examples](/../../tree/master/examples/Processes/Processes.ino) 
 ##### Sample snippet:
 ``` c++
 async::Process blinker = async::Process(Params([](){
@@ -56,7 +53,7 @@ async::Process blinker = async::Process(Params([](){
     };
 }));
 ```
-## Async function (experimental ⚠)
+## Async function
 An approach that allows the use of linguistically similar mechanisms
 to high-level languages such as Python, C # etc ...
 ##### Sample snippet:

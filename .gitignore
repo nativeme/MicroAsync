@@ -11,5 +11,3 @@
 src/main.cpp
 # Powershell scripts
 *.ps1
-# other
-notes.cpp

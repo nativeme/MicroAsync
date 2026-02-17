@@ -3,7 +3,7 @@
  * @author Łukasz Kaniak (lukaszkaniak@gmail.com)
  * @brief 
  * Describes AsyncFunction and AsyncFunction's Future class.
- * Used as one of features in async-tools.
+ * Used as one of features in MicroAsync.
  * @version 0.1
  * @date 2022-03-18
  * 
@@ -14,11 +14,13 @@
 #ifndef _ASYNCFUNCTION_HPP_
 #define _ASYNCFUNCTION_HPP_
 
+#include <cstdint>
+
 #include "ILoopable.hpp"
 #include "IAsyncFunction.hpp"
 #include "Runtime.hpp"
 
-#define returns(function, condition, value) switch(condition){ case true: function.return_buffer.push_back(value); return true; default: return false;}
+#define async_return(function, condition, value) switch(condition){ case true: function.return_buffer.push_back(value); return true; default: return false;}
 
 namespace async{
 
@@ -60,13 +62,12 @@ public:
         Future(){
         }
 
-        template<typename... Args>
-        Future(function<T(ArgTypes...)>* async_function, Args* ...args)
+        Future(async::function<T(ArgTypes...)>* async_function, ArgTypes... args)
         :   state(Future::State::processing),
             async_function(async_function),
             wrapped_function_nonarged(
             [this, args...](){
-                this->fulfilled = this->async_function->wrapped_function.operator()(*args...);
+                this->fulfilled = this->async_function->wrapped_function(args...);
             })
         {}
 
@@ -134,15 +135,20 @@ public:
 
     ~function(){};
     
-    template<typename... Args>
-    Future* operator()(const Args& ...args){
-        auto new_future_call = new Future(this, &args...);
+    Future* operator()(ArgTypes... args){
+        auto new_future_call = new Future(this, args...);
         this->function_calls.push_back(new_future_call);
         return new_future_call;
     }
 
     void loop() override {
-        for (auto &&call : function_calls){ call->loop(); }
+        for (size_t i = 0; i < function_calls.size(); ) {
+            auto call = function_calls[i];
+            call->loop();
+            if (i < function_calls.size() && function_calls[i] == call) {
+                i++;
+            }
+        }
     }
 };
 

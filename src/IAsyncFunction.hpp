@@ -1,6 +1,8 @@
 #ifndef _IASYNCFUNCTION_HPP_
 #define _IASYNCFUNCTION_HPP_
 
+#include <cstdint>
+
 namespace async{
 
 class IAsyncFunction

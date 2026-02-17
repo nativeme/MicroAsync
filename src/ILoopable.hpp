@@ -8,8 +8,8 @@ class ILoopable
 private:
     
 public:
-    ILoopable(){};
-    virtual ~ILoopable(){};
+    ILoopable() = default;
+    virtual ~ILoopable() = default;
     virtual void loop() = 0;
 };
 }

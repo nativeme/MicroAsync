@@ -1,8 +1,8 @@
 /**
- * @file AsyncFunctions.cpp
+ * @file Functions.ino
  * @author Łukasz Kaniak - nativeme (lukaszkaniak@gmail.com)
  * @brief 
- * This is example file for the "Async Function" of async-tools library.
+ * This is example file for the "Async Function" of MicroAsync library.
  * "Async Function" isn't fully tested yet, so have in mind that isn't production ready feature.
  * @version 0.1
  * @date 2022-04-07
@@ -11,10 +11,8 @@
  * 
  */
 
-#include "Arduino.h"
-#include "Runtime.hpp"
-#include "AsyncFunction.hpp"
-#include "Timer.hpp"
+#include <Arduino.h>
+#include <MicroAsync.h>
 
 /*
     This example will mime event of people
@@ -69,12 +67,14 @@ async::function<String(const PartyMamber&)> person_arrived = [](const PartyMambe
         char welcome_msg[64];
         sprintf(welcome_msg, "Hello %s! Welcome!", member.name);
         
-        returns(person_arrived, member.arrived(), String(welcome_msg));
+        async_return(person_arrived, member.arrived(), String(welcome_msg));
     }
 };
 
 void setup(){
     Serial.begin(115200);
+    while (!Serial){};
+
     Serial.printf("entered setup block at %lu millis\n", millis());
 
     josh.get_to_party();

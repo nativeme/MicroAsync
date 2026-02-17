@@ -1,4 +1,5 @@
 #include "Call.hpp"
+
 namespace async{
 
 Call::Call(){
@@ -8,27 +9,74 @@ Call::~Call(){
 
 }
 
-Call* Call::then(const std::function<bool()> &&code_block){
-    this->code_chain.push_back(code_block);
+Call* Call::expire(uintmax_t expire_time){
+    expire_timer.set_time(expire_time);
+    expire_timer.start();
     return this;
 }
-Call* Call::then(const std::function<void()> &&code_block){
-    this->code_chain.push_back([code_block](){
-        code_block();
+
+Call* Call::expired(std::function<void()> callback){
+    expired_callback = std::move(callback);
+    return this;
+}
+
+Call* Call::extend_wait(uintmax_t extend_time){
+    wait_timer.add_time(extend_time);
+    return this;
+}
+
+Call* Call::reset_wait(){
+    wait_timer.start();
+    return this;
+}
+
+Call* Call::extend(uintmax_t extend_time){
+    expire_timer.add_time(extend_time);
+    return this;
+}
+
+Call* Call::await(std::function<bool()> code_block){
+    this->code_chain.push_back(std::move(code_block));
+    return this;
+}
+Call* Call::then(std::function<void()> code_block){
+    this->code_chain.push_back([cb = std::move(code_block)](){
+        cb();
         return true;
     });
     return this;
 }
-Call* Call::wait(const uint32_t &time){
-    
+
+void Call::cancel(){
+    this->cancelled = true;
+}
+
+void Call::cancel(std::function<void()> cancelCallback){
+    cancel_callback = std::move(cancelCallback);
+    this->cancel();
+}
+
+bool Call::exist(async::Call* call){
+    if (call == nullptr) { return false; }
+    for (size_t i = 0; i < Runtime::async_calls.size(); i++){
+        if (Runtime::async_calls[i] == call){
+            return true;
+        }
+    }
+    return false;
+}
+
+Call* Call::wait(uint32_t time){
+    // This pushes to chain function which uses timer built in this call
+    // if timer finishes it passes true, going forward.
     code_chain.push_back([this, time](){
-        switch (async_timer.get_state()){
+        switch (wait_timer.get_state()){
         case Timer::State::idle:
-            async_timer.set_time(time);
-            async_timer.start();
+            wait_timer.set_time(time);
+            wait_timer.start();
             return false;
         case Timer::State::finished:
-            async_timer.clear();
+            wait_timer.clear();
             return true;
         default:
             return false;
@@ -39,16 +87,31 @@ Call* Call::wait(const uint32_t &time){
     return this;
 }
 void Call::loop(){
-    if(chain_link == code_chain.size()){
+    if(cancelled || chain_link == code_chain.size() || expire_timer.get_state() == Timer::State::finished){
+        // If call got expired run callback
+        if(cancelled) { cancel_callback(); Serial.println("Async CANCELLED"); }
+        if(expire_timer.get_state() == Timer::State::finished){ expired_callback(); }
+        // Remove call from runtime
+        bool found = false;
         for (size_t i = 0; i < Runtime::async_calls.size(); i++){
             if (Runtime::async_calls[i] == this){
                 Runtime::async_calls.erase(Runtime::async_calls.begin() + i);
-                delete this;
+                found = true;
+                break; // Break loop to avoid index issues, then delete
             }
         }
+        delete this;
+        // WARNING: 'this' is now deleted. Return immediately.
+        return;
     }else{
+        // empty function always == true, it pushes forward,
+        // bool functions evaluate until they get true,
+        // if push forward == true, go to next function.
         if(push_forward == false){
-            this->push_forward = this->code_chain[chain_link]();
+            // Ensure bounds
+            if(chain_link < code_chain.size()) {
+                this->push_forward = this->code_chain[chain_link]();
+            }
         }else{
             push_forward = false;
             chain_link++;

@@ -1,8 +1,8 @@
 /**
- * @file AsyncProcesses.cpp
+ * @file Processes.ino
  * @author Łukasz Kaniak - nativeme (lukaszkaniak@gmail.com)
  * @brief 
- * This is example file for the "Async Process" of async-tools library.
+ * This is example file for the "Async Process" of MicroAsync library.
  * "Process" is designed to perform tasks cyclically, within a specified interval.
  * It have few event methods that simplify state managment like "on_start", "on_stop" etc.
  * @version 0.1
@@ -12,10 +12,7 @@
  */
 
 #include <Arduino.h>
-#include "Runtime.hpp"
-#include "Process.hpp"
-#include "Params.hpp"
-#include "ProcessGroup.hpp"
+#include <MicroAsync.h>
 
 /*
     Process will execute "on_working" codeblock every interval.

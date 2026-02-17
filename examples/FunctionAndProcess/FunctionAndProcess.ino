@@ -1,5 +1,5 @@
 /**
- * @file FunctionAndProcess.cpp
+ * @file FunctionAndProcess.ino
  * @author Łukasz Kaniak - nativeme (lukaszkaniak@gmail.com)
  * @brief 
  * This example shows simple practical usage of
@@ -9,9 +9,8 @@
  * @copyright Copyright (c) 2022
  */
 
-#include "Arduino.h"
-#include "AsyncFunction.hpp"
-#include "Process.hpp"
+#include <Arduino.h>
+#include <MicroAsync.h>
 
 async::Process blinker = Params([](){
     blinker.set_interval(100);
@@ -43,11 +42,13 @@ async::function<String(void)> async_readline = [](){
             clear = true;
         }
     }
-    returns(async_readline, return_if, buf);
+    async_return(async_readline, return_if, buf);
 };
 
 void setup(){
     Serial.begin(115200);
+    while (!Serial){};
+
     Serial.printf("entered setup block at %lu millis\n", millis());
 
     Serial.println("Remember that if you using Arduino's serial monitor you should select 'Carriage return' input mode (next to baud selector).");

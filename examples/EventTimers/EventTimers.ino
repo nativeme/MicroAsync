@@ -2,7 +2,7 @@
  * @file EventTimers.cpp
  * @author Łukasz Kaniak - nativeme (lukaszkaniak@gmail.com)
  * @brief 
- * This is example file for the "EventTimer" of async-tools library.
+ * This is example file for the "EventTimer" of MicroAsync library.
  * EventTimer is works similarly to classic "Timer".
  * You can attach to it events by passing lambdas to "add_event" method.
  * @date 2022-05-23
@@ -10,9 +10,7 @@
  */
 
 #include <Arduino.h>
-#include "Timer.hpp"
-#include "EventTimer.hpp"
-#include "Runtime.hpp"
+#include <MicroAsync.h>
 
 
 /*
@@ -24,6 +22,7 @@ auto event_timer = async::EventTimer(5000,  /* Countdown time */
 
 void setup(){
     Serial.begin(115200);
+    while (!Serial){};
 
     /*
         Add few dummy events to EventTimer for testing purposes by "add_event(at_time, lambda<void(void)>) method"

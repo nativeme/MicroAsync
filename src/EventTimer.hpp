@@ -31,12 +31,18 @@ private:
 public:
     EventTimer(const Params &&builder);
     
+    /** @brief Construct EventTimer with duration and options. */
     EventTimer(const uint32_t &time, const bool &auto_start = false, const bool &pulse = false);
     
     ~EventTimer();
 
     virtual void clear() override;
 
+    /**
+     * @brief Add an event to be executed at a specific time.
+     * @param execute_at Time offset from start when event should run.
+     * @param event Lambda function to execute.
+     */
     void add_event(const uint32_t& execute_at, std::function<void(void)>&& event);
 
     virtual void loop();

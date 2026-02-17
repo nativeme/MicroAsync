@@ -1,8 +1,8 @@
 /**
- * @file AsyncCall.cpp
+ * @file Call.ino
  * @author Łukasz Kaniak - nativeme (lukaszkaniak@gmail.com)
  * @brief 
- * This is example file for the "Async Call" of async-tools library.
+ * This is example file for the "Async Call" of MicroAsync library.
  * Very simple to use and lightweight tool for creating async chains of statements.
  * @version 0.1
  * @date 2022-04-07
@@ -11,9 +11,8 @@
  * 
  */
 
-#include "Arduino.h"
-#include "Runtime.hpp"
-#include "Call.hpp"
+#include <Arduino.h>
+#include <MicroAsync.h>
 
 /*
     Async call is simple method to distribute events
@@ -46,7 +45,8 @@ void blink_led(){
 
 void setup(){
     Serial.begin(115200);
-    Serial.setTimeout(10);
+    while (!Serial){};
+
     pinMode(LED_BUILTIN, OUTPUT);
     Serial.println("Press 'b' to trigger blink event.");
 }
