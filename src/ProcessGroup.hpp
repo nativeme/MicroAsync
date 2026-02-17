@@ -1,10 +1,11 @@
 #ifndef _PROCESSGROUP_HPP_
 #define _PROCESSGROUP_HPP_
 
-#include <Arduino.h>
 #include <vector>
 #include <optional>
 #include <functional>
+#include <string>
+#include <string_view>
 #include "Process.hpp"
 
 namespace async {
@@ -18,7 +19,7 @@ namespace async {
  */
 class ProcessGroup : public std::vector<Process*> {
 private:
-    String name = "";
+    std::string name = "";
     void new_id();
 
 public:
@@ -46,15 +47,15 @@ public:
 
     /**
      * @brief Get the name of the process group.
-     * @return const String Name of the group.
+     * @return Name of the group (view).
      */
-    const String get_name() const;
+    std::string_view get_name() const;
 
     /**
      * @brief Set the name of the process group.
      * @param name Name to assign.
      */
-    void set_name(const String& name);
+    void set_name(std::string_view name);
 
     void avg_looptime() const; // TODO: Implement average loop time calculation.
 
@@ -93,7 +94,7 @@ public:
      * @param name Name of the process to find.
      * @return Process* Pointer to the found process or nullptr.
      */
-    Process* select_process(const String& name);
+    Process* select_process(std::string_view name);
 
     /**
      * @brief Selects a process by ID.
@@ -107,7 +108,7 @@ public:
      * @param name Name of the process to find.
      * @return std::optional<std::reference_wrapper<Process>> Found process or std::nullopt.
      */
-    std::optional<std::reference_wrapper<Process>> safe_select_process(const String& name) const;
+    std::optional<std::reference_wrapper<Process>> safe_select_process(std::string_view name) const;
 
     /**
      * @brief Safely selects a process by ID returning an optional reference.

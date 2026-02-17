@@ -5,11 +5,11 @@ namespace async {
 
 ProcessGroup::ProcessGroup() {}
 
-const String ProcessGroup::get_name() const {
+std::string_view ProcessGroup::get_name() const {
     return this->name;
 }
 
-void ProcessGroup::set_name(const String& name) {
+void ProcessGroup::set_name(std::string_view name) {
     this->name = name;
 }
 
@@ -49,7 +49,7 @@ void ProcessGroup::kill_all() {
     }
 }
 
-Process* ProcessGroup::select_process(const String& name) {
+Process* ProcessGroup::select_process(std::string_view name) {
     auto found = std::find_if(this->begin(), this->end(), [&name](const Process* proc) {
         return proc->get_name() == name;
     });
@@ -71,7 +71,7 @@ Process* ProcessGroup::select_process(uint16_t id) {
         return nullptr;
 }
 
-std::optional<std::reference_wrapper<Process>> ProcessGroup::safe_select_process(const String& name) const {
+std::optional<std::reference_wrapper<Process>> ProcessGroup::safe_select_process(std::string_view name) const {
     auto found = std::find_if(this->begin(), this->end(), [&name](const Process* proc) {
         return proc->get_name() == name;
     });

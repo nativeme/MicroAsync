@@ -64,10 +64,10 @@ void setup(){
     pg.set_name("blink_clock");
     Serial.printf("Process group '%s' contains %d processes:\n", pg.get_name(), pg.size());
     for (auto &&process : pg){
-        Serial.printf("id: %d name: %s\n", process->get_id(), process->get_name().c_str());
+        Serial.printf("id: %d name: %s\n", process->get_id(), process->get_name().data());
     }
     auto bl = pg.select_process("blinker");
-    Serial.printf("Found process id: %d name: %s interval: %d\n", bl->get_id(), bl->get_name().c_str(), bl->get_interval());
+    Serial.printf("Found process id: %d name: %s interval: %d\n", bl->get_id(), bl->get_name().data(), bl->get_interval());
 }
 
 void loop(){

@@ -55,7 +55,7 @@ void ProcessHypervisor::kill_all() {
     }
 }
 
-std::optional<std::reference_wrapper<Process>> ProcessHypervisor::safe_select_process(const String& name) {
+std::optional<std::reference_wrapper<Process>> ProcessHypervisor::safe_select_process(std::string_view name) {
     auto process = defaultGroup.safe_select_process(name);
     if (process) {
         return process;
@@ -83,7 +83,7 @@ std::optional<std::reference_wrapper<Process>> ProcessHypervisor::safe_select_pr
     return std::nullopt;
 }
 
-Process* ProcessHypervisor::select_process(const String& name) {
+Process* ProcessHypervisor::select_process(std::string_view name) {
     auto process = defaultGroup.select_process(name);
     if (process) {
         return process;

@@ -1,12 +1,12 @@
 #ifndef _RUNTIME_HPP_
 #define _RUNTIME_HPP_
 
-#include <Arduino.h>
 #include <vector>
 #include <memory>
 #include <algorithm>
 #include "IAsyncFunction.hpp"
 #include "ILoopable.hpp"
+#include "TimeSource.hpp"
 
 namespace async {
 
@@ -50,12 +50,22 @@ public:
      * Includes a call to yield() to keep the ESP8266/ESP32 watchdog happy.
      */
     static void loop() {
-        yield();
+    #if __has_include(<Arduino.h>)
+        ::yield();
+    #else
+        if (loopables.empty() && processes.empty() &&
+            async_calls.empty() && async_functions.empty()) {
+            TimeSource::idle(); // def sleep when idle to not burn CPU
+            return;
+        }
+    #endif
+
         loop_vector(loopables);
         loop_vector(processes);
         loop_vector(async_calls);
         loop_vector(async_functions);
     }
+
 };
 
 } // namespace async

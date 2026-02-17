@@ -1,4 +1,5 @@
 #include "EventTimer.hpp"
+
 namespace async{
     EventTimer::EventTimer(const Params &&builder)
     :   Timer(std::move(builder))

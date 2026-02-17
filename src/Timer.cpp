@@ -91,16 +91,16 @@ uint32_t Timer::read_time() const {
     switch (resolution)
     {
     case Resolution::millis_res:
-        return millis();
+        return TimeSource::elapsedMillis();
     case Resolution::micros_res:
-        return micros();
+        return TimeSource::elapsedMicros();
     default:
         break;
     }
-    return millis();
+    return TimeSource::elapsedMillis();
 }
 
-void Timer::set_time(uint32_t time){
+void Timer::set_time(uint32_t time){    
     this->base_value = time;
     target_time = start_time + base_value;
 }

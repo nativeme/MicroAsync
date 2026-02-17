@@ -126,11 +126,11 @@ void Process::shutdown() {
     state = State::shutting_down;
 }
 
-String Process::get_name() const { 
+std::string_view Process::get_name() const { 
     return this->name; 
 }
 
-void Process::set_name(const String& name) {
+void Process::set_name(std::string_view name) {
     this->name = name;
 }
 

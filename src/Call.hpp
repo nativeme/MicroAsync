@@ -1,7 +1,9 @@
 #ifndef _CALL_HPP_
 #define _CALL_HPP_
 
-#include "Arduino.h"
+#include <functional>
+#include <vector>
+
 #include "Timer.hpp"
 #include "ILoopable.hpp"
 
@@ -89,11 +91,6 @@ public:
     void cancel();
     void cancel(std::function<void()> code_block);
 
-    [[deprecated("Use cancel() instead")]]
-    void cancell() { cancel(); }
-    [[deprecated("Use cancel(callback) instead")]]
-    void cancell(std::function<void()> code_block) { cancel(code_block); }
-    
     static bool exist(async::Call* call);
 
     /**

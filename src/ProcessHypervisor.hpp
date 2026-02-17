@@ -1,10 +1,10 @@
 #ifndef _PROCESSHYPERVISOR_HPP_
 #define _PROCESSHYPERVISOR_HPP_
 
-#include "Arduino.h"
 #include <vector>
 #include <optional>
 #include <functional>
+#include <string_view>
 #include "ProcessGroup.hpp"
 
 namespace async {
@@ -29,9 +29,9 @@ public:
     static void kill_all();
 
     // Functions to select processes
-    static std::optional<std::reference_wrapper<Process>> safe_select_process(const String& name);
+    static std::optional<std::reference_wrapper<Process>> safe_select_process(std::string_view name);
     static std::optional<std::reference_wrapper<Process>> safe_select_process(const uint16_t& id);
-    static Process* select_process(const String& name);
+    static Process* select_process(std::string_view name);
     static Process* select_process(const uint16_t& id);
 };
 }

@@ -14,6 +14,8 @@
 
 #include <cstdint>
 #include <functional>
+#include <string>
+#include <string_view>
 #include "Params.hpp"
 #include "Timer.hpp"
 #include "ILoopable.hpp"
@@ -35,7 +37,7 @@ private:
 
     void new_id();     
     Timer internal_timer = Timer(1000, true, true);
-    String name = "";
+    std::string name = "";
 
 public:
     /** @brief Callback executed when the process is created. */
@@ -58,9 +60,9 @@ public:
     ~Process() override = default;
 
     /** @brief Get the process name. */
-    String get_name() const;
+    std::string_view get_name() const;
     /** @brief Set the process name. */
-    void set_name(const String& name);
+    void set_name(std::string_view name);
     
     /** @brief Get the unique process ID. */
     int16_t get_id() const;

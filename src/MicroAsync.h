@@ -9,5 +9,6 @@
 #include "ProcessGroup.hpp"
 #include "AsyncFunction.hpp"
 #include "Params.hpp"
+#include "TimeSource.hpp"
 
 #endif

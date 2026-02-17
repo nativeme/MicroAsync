@@ -1,6 +1,7 @@
 #ifndef _EVENTTIMER_HPP_
 #define _EVENTTIMER_HPP_
-#include "Arduino.h"
+
+#include <functional>
 #include "Timer.hpp"
 #include "Params.hpp"
 
