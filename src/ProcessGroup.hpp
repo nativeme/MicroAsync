@@ -42,7 +42,7 @@ public:
         }
     }
 
-    ~ProcessGroup();
+    ~ProcessGroup() = default;
 
     /**
      * @brief Get the name of the process group.

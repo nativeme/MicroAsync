@@ -4,7 +4,6 @@
 namespace async {
 
 ProcessGroup::ProcessGroup() {}
-ProcessGroup::~ProcessGroup() {}
 
 const String ProcessGroup::get_name() const {
     return this->name;

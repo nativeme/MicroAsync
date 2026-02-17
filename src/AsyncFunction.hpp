@@ -15,6 +15,9 @@
 #define _ASYNCFUNCTION_HPP_
 
 #include <cstdint>
+#include <vector>
+#include <functional>
+#include <algorithm>
 
 #include "ILoopable.hpp"
 #include "IAsyncFunction.hpp"
@@ -59,8 +62,7 @@ public:
 
         int fid = 0;
 
-        Future(){
-        }
+        Future() = default;
 
         Future(async::function<T(ArgTypes...)>* async_function, ArgTypes... args)
         :   state(Future::State::processing),
@@ -71,8 +73,7 @@ public:
             })
         {}
 
-        ~Future(){
-        }
+        ~Future() = default;
 
         T value() {
             this->state = Future::State::to_destroy;
@@ -82,7 +83,6 @@ public:
         Future* await(){
             while(state != Future::State::completed){
                 async::Runtime::loop();
-                yield();
             }
             return this;
         }
@@ -93,10 +93,12 @@ public:
             case Future::State::processing:
                 wrapped_function_nonarged();
                 if(fulfilled){
-                    // this->val = async_function->return_buffer[async_function->return_buffer.size() - 1];
-                    // async_function->return_buffer.pop_back();
-                    this->val = async_function->return_buffer[0];
-                    async_function->return_buffer.clear();
+                    if(!async_function->return_buffer.empty()){
+                        this->val = async_function->return_buffer.front();
+                        async_function->return_buffer.erase(async_function->return_buffer.begin());
+                    } else {
+                        this->val = T{};
+                    }
                     state = Future::State::completed;
                 }
                 break;
@@ -133,7 +135,7 @@ public:
         async::Runtime::async_functions.push_back(this);
     }
 
-    ~function(){};
+    ~function() = default;
     
     Future* operator()(ArgTypes... args){
         auto new_future_call = new Future(this, args...);
@@ -163,21 +165,19 @@ public:
         if constexpr (sizeof...(Pack) > 0){
             if(!future->fulfilled)
                 return false;
-            is_fulfilled(rest...);
+            return is_fulfilled(rest...);
         }else{
             if(!future->fulfilled)
                 return false;
             return true;
         }
-        return true;
     }
 
     template<typename Future, typename ...FuturePack>
     inline bool gather(const Future& future, const FuturePack& ...futures){
         if constexpr (sizeof...(FuturePack) > 0) {
             future->await();
-            gather(futures...);
-            return false;
+            return gather(futures...);
         } else {
             future->await();
             return true;

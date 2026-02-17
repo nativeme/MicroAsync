@@ -32,7 +32,7 @@ public:
     };
 
     Call();
-    ~Call() override;
+    ~Call() override = default;
     
     /**
      * @brief 

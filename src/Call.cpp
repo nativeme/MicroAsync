@@ -5,9 +5,6 @@ namespace async{
 Call::Call(){
     Runtime::async_calls.push_back(this);
 }
-Call::~Call(){
-
-}
 
 Call* Call::expire(uintmax_t expire_time){
     expire_timer.set_time(expire_time);

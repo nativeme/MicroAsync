@@ -13,8 +13,8 @@ public:
     int id = 0;
     uint8_t state = 0;
 
-    IAsyncFunction(){};
-    virtual ~IAsyncFunction(){};
+    IAsyncFunction() = default;
+    virtual ~IAsyncFunction() = default;
     
     virtual int new_id(){
         static int id_counter = 0;

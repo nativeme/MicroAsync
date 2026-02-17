@@ -12,8 +12,7 @@ namespace async{
 
     };
     
-    EventTimer::~EventTimer(){   
-    };
+    
 
     void EventTimer::clear(){
         state = State::idle;

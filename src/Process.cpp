@@ -82,9 +82,6 @@ Process& Process::operator=(Process&& other) noexcept {
     return *this;
 }
 
-Process::~Process() {
-}
-
 void Process::kill() {
     for (size_t i = 0; i < async::Runtime::processes.size(); i++) {
         if (async::Runtime::processes[i] == this) {

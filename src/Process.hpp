@@ -55,7 +55,7 @@ public:
     Process(Process&& other) noexcept;
     Process& operator=(const Process& other);
     Process& operator=(Process&& other) noexcept;
-    ~Process() override;
+    ~Process() override = default;
 
     /** @brief Get the process name. */
     String get_name() const;

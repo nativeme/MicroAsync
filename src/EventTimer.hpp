@@ -34,7 +34,7 @@ public:
     /** @brief Construct EventTimer with duration and options. */
     EventTimer(const uint32_t &time, const bool &auto_start = false, const bool &pulse = false);
     
-    ~EventTimer();
+    ~EventTimer() override = default;
 
     virtual void clear() override;
 
